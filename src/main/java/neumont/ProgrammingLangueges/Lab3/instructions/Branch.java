@@ -17,14 +17,18 @@ public byte[] branch(String[] instruction) {
     
 
     int machineCode = (cond << 28) | (opcode << 24) | (offset & 0x00FFFFFF);
+    System.out.printf("0x%08X\n", machineCode);
 
     return toLittleEndian(machineCode);
 }
 
 private int calculateOffset(String operand) {
-    int instructionOffset = Integer.parseInt(operand); // B -16 
+    int byteOffset = Integer.parseInt(operand);
 
-    return instructionOffset; 
+    int wordOffset = byteOffset >> 2;
+
+    return wordOffset & 0x00FFFFFF; // B -16 & B NE -3
+
 }
 
 private byte[] toLittleEndian(int value) {

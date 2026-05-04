@@ -33,17 +33,14 @@ public class Controller {
 
     public void assemble() {
         for (int i = 0; i < assemblyLines.size(); i++) {
-            instructionSender(assemblyLines.get(i), i * 4);
+            instructionSender(assemblyLines.get(i));
         }
     }
 
-    private void instructionSender(String[] instructionArray, int currentAddress) {
+    private void instructionSender(String[] instructionArray) {
         switch (instructionArray[0]) {
             case "B" -> {
-                Branch branch = new Branch();
-
-                // For now: fake target example (you will replace with label resolution later)
-                
+                Branch branch = new Branch();                
 
                 byte[] result = branch.branch(instructionArray);
 
@@ -54,6 +51,7 @@ public class Controller {
                 throw new IllegalArgumentException("Unknown instruction: " + instructionArray[0]);
             }
         }
+        
     }
 
     public ArrayList<byte[]> getMachineCode() {
