@@ -10,5 +10,8 @@ public class Lab3 {
     public static void main(String[] args) {
         Controller Controller = new Controller();
         Controller.readFile();
+        Controller.assemble();
+        
+        Controller.writeKernelImage();
     }
 }

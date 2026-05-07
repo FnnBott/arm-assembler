@@ -1,6 +1,6 @@
-neumont/ProgrammingLangueges/Lab3/instructions/branch.class
+neumont/ProgrammingLangueges/Lab3/controller/Controller.class
+neumont/ProgrammingLangueges/Lab3/instructions/Instruction.class
+neumont/ProgrammingLangueges/Lab3/instructions/SingleDataTransfer.class
 neumont/ProgrammingLangueges/Lab3/Lab3.class
-neumont/ProgrammingLangueges/Lab3/instructions/singleDataTransfer.class
-neumont/ProgrammingLangueges/Lab3/controller/controller.class
-neumont/ProgrammingLangueges/Lab3/instructions/instruction.class
-neumont/ProgrammingLangueges/Lab3/instructions/dataProcessing.class
+neumont/ProgrammingLangueges/Lab3/instructions/DataProcessing.class
+neumont/ProgrammingLangueges/Lab3/instructions/Branch.class
