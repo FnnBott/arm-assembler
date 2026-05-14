@@ -1,31 +1,24 @@
 package neumont.ProgrammingLangueges.Lab3.instructions;
 
-public class Branch extends Instruction {
+import java.util.HashMap;
 
-    public int branch(String[] instruction) {
+import neumont.ProgrammingLangueges.Lab3.controller.ParsedInstruction;
 
-        int cond = getConditionCode(instruction[1]);
 
-        int offset;
+public class Branch extends Instruction{
+    public int branch(ParsedInstruction instr, int currentAddress, HashMap<String, Integer> labelTable) {
+        int cond = instr.conditionCode();
+        int L    = instr.mnemonic.equals("BL") ? 1 : 0;
 
-        if (cond != 0b1110) {
-            offset = calculateOffset(instruction[2]);
-        } else {
-            offset = calculateOffset(instruction[1]);
+        if (instr.mnemonic.equals("BX")) {
+            int rm = getRegister(instr.operands[0]);
+            return (cond << 28) | 0x012FFF10 | rm;
         }
 
-        int machineCode =
-                (cond << 28) |
-                (0b1010 << 24) |
-                (offset & 0x00FFFFFF);
+        String target = instr.operands[0];
+        int offset = labelTable.containsKey(target) ? labelTable.get(target) - currentAddress : Integer.parseInt(target);
 
-        System.out.printf("0x%08X\n", machineCode);
-
-        return machineCode;
-    }
-
-    private int calculateOffset(String operand) {
-        int wordOffset = Integer.parseInt(operand);
-        return wordOffset & 0x00FFFFFF;
+        return (cond << 28) | (0b101 << 25) | (L << 24) | (offset & 0x00FFFFFF);
     }
 }
+

@@ -1,66 +1,47 @@
 package neumont.ProgrammingLangueges.Lab3.instructions;
 
+import neumont.ProgrammingLangueges.Lab3.controller.ParsedInstruction;
+
 public class SingleDataTransfer extends Instruction {
     
-    public int ldr(String[] instruction) { 
+    public int ldr(ParsedInstruction instruction) { 
         return encodeLoadStore(instruction, 1); 
     }
 
-    public int str(String[] instruction) { 
+    public int str(ParsedInstruction instruction) { 
         return encodeLoadStore(instruction, 0); 
     }
 
 
-    private int encodeLoadStore(String[] instruction, int loadBit){
-        int cond = getConditionCode(instruction[0]);
-        int rd;
-        int rn;
-        int offset = 0;
-        int I = 0;          
-        int P = 0;          
-        int U = 0;          
-        int B = 0;          
-        int W = 0;          
-        int L = loadBit;  
+    private int encodeLoadStore(ParsedInstruction instr, int loadBit) {
+    int cond = instr.conditionCode();
+    int rd = getRegister(instr.operands[0]);
 
-        int rdIndex;
-        int addrIndex;
+    String address = instr.operands[1].replace("[", "").replace("]", "");
+    String[] parts = address.split(",");
 
-        if (cond != 0b1110){
-            rdIndex = 2;
-            addrIndex = 3;
-        } else{
-            rdIndex = 1;
-            addrIndex = 2;
-        }
+    int rn = getRegister(parts[0]);
+    int offset = parts.length > 1 ? parseImmediate(parts[1]) & 0xFFF : 0;
 
-        rd = getRegister(instruction[rdIndex]);
+    int 
+    I = 0, 
+    P = 0, 
+    U = 0, 
+    B = 0, 
+    W = 0, 
+    L = loadBit;
 
-        String address = instruction[addrIndex].replace("[","").replace("]","").trim();
-
-        String[] parts = address.split(",");
-
-        rn = getRegister(parts[0]);
-
-        if (parts.length > 1){
-            offset = parseImmediate(parts[1]) & 0xFFF;
-        }
-
-        int machineCode =
-                (cond << 28) |
-                (0b01 << 26) |
-                (I << 25) |
-                (P << 24) |
-                (U << 23) |
-                (B << 22) |
-                (W << 21) |
-                (L << 20) |
-                (rn << 16) |
-                (rd << 12) |
-                offset;
-
-        System.out.printf("0x%08X\n", machineCode);
-
-        return machineCode;
-    }
+    return 
+        (cond << 28) |
+        (0b01 << 26) |
+        (I << 25) |
+        (P << 24) |
+        (U << 23) |
+        (B << 22) |
+        (W << 21) |
+        (L << 20) | 
+        (rn << 16) | 
+        (rd << 12) | 
+        offset;
+}
 }

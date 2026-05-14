@@ -8,10 +8,14 @@ import neumont.ProgrammingLangueges.Lab3.controller.Controller;
 public class Lab3 {
 
     public static void main(String[] args) {
-        Controller Controller = new Controller();
-        Controller.readFile();
-        Controller.assemble();
-        
-        Controller.writeKernelImage();
-    }
+    Controller controller = new Controller();
+
+    controller.readFile();
+
+    controller.buildLabelTable();  
+
+    controller.assemble();        
+      
+    controller.writeKernelImage();
+}
 }

@@ -1,6 +1,7 @@
-/home/fnn/Dev/ProgrammingLanguages/Lab3/src/main/java/neumont/ProgrammingLangueges/Lab3/Lab3.java
-/home/fnn/Dev/ProgrammingLanguages/Lab3/src/main/java/neumont/ProgrammingLangueges/Lab3/controller/Controller.java
-/home/fnn/Dev/ProgrammingLanguages/Lab3/src/main/java/neumont/ProgrammingLangueges/Lab3/instructions/Branch.java
-/home/fnn/Dev/ProgrammingLanguages/Lab3/src/main/java/neumont/ProgrammingLangueges/Lab3/instructions/DataProcessing.java
-/home/fnn/Dev/ProgrammingLanguages/Lab3/src/main/java/neumont/ProgrammingLangueges/Lab3/instructions/Instruction.java
-/home/fnn/Dev/ProgrammingLanguages/Lab3/src/main/java/neumont/ProgrammingLangueges/Lab3/instructions/SingleDataTransfer.java
+/home/fnn/Dev/ProgrammingLanguages/Assembler/src/main/java/neumont/ProgrammingLangueges/Lab3/Lab3.java
+/home/fnn/Dev/ProgrammingLanguages/Assembler/src/main/java/neumont/ProgrammingLangueges/Lab3/controller/Controller.java
+/home/fnn/Dev/ProgrammingLanguages/Assembler/src/main/java/neumont/ProgrammingLangueges/Lab3/controller/ParsedInstruction.java
+/home/fnn/Dev/ProgrammingLanguages/Assembler/src/main/java/neumont/ProgrammingLangueges/Lab3/instructions/Branch.java
+/home/fnn/Dev/ProgrammingLanguages/Assembler/src/main/java/neumont/ProgrammingLangueges/Lab3/instructions/DataProcessing.java
+/home/fnn/Dev/ProgrammingLanguages/Assembler/src/main/java/neumont/ProgrammingLangueges/Lab3/instructions/Instruction.java
+/home/fnn/Dev/ProgrammingLanguages/Assembler/src/main/java/neumont/ProgrammingLangueges/Lab3/instructions/SingleDataTransfer.java

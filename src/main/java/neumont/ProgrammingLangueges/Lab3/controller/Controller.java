@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 import neumont.ProgrammingLangueges.Lab3.instructions.Branch;
@@ -13,92 +14,64 @@ import neumont.ProgrammingLangueges.Lab3.instructions.SingleDataTransfer;
 
 public class Controller {
 
-    private ArrayList<String[]> assemblyLines = new ArrayList<>();
-    private ArrayList<Integer> instructionList = new ArrayList<>();
+    private ArrayList<ParsedInstruction> assemblyLines = new ArrayList<>();
+    private ArrayList<Integer> instructionList = new ArrayList<>(); 
 
     private final Branch branch = new Branch();
     private final DataProcessing dataProcessing = new DataProcessing();
     private final SingleDataTransfer singleDataTransfer = new SingleDataTransfer();
+    private HashMap<String, Integer> labelTable = new HashMap<>();
 
     public void readFile() {
+    File assemblyFile = new File("Lab4Assembly.txt"); //TODO: DONT FORGET TO CHANGE THIS FOR EACH LAB FUCKASS!
 
-        File assemblyFile = new File("Lab3Assembly.txt");
+    try (Scanner reader = new Scanner(assemblyFile)) {
 
-        try (Scanner reader = new Scanner(assemblyFile)) {
+        while (reader.hasNextLine()) {
+            String line = reader.nextLine().trim();
 
-            while (reader.hasNextLine()) {
+            if (line.isEmpty()) continue;
 
-                String line = reader.nextLine().trim();
-
-                if (line.isEmpty()) {
-                    continue;
-                }
-
-                assemblyLines.add(trimString(line));
-            }
-
-        } catch (FileNotFoundException e) {
-
-            System.out.println("File Error");
-            e.printStackTrace();
+            assemblyLines.add(new ParsedInstruction(line)); 
         }
+
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
     }
+}
 
     private String[] trimString(String line) {
         return line.trim().split("\\s+");
     }
 
-    public void assemble() {
-
-        for (String[] instruction : assemblyLines) {
-
-            int machineCode = instructionSender(instruction);
-
-            instructionList.add(machineCode);
-        }
+    public void buildLabelTable() {
+    int address = 0;
+    for (ParsedInstruction instruction : assemblyLines) {
+        if (instruction.label != null) labelTable.put(instruction.label, address);
+        address++;
     }
+}   
 
-    private int instructionSender(String[] instructionArray) {
-
-        String instruction = instructionArray[0].toUpperCase();
-
-        switch (instruction) {
-
-            case "B", "BL", "BX" -> {
-                return branch.branch(instructionArray);
-            }
-        }
-
-        switch (instruction) {
-
-            case "MOVW" -> {
-                return dataProcessing.movw(instructionArray);
-            }
-            case "MOVT" -> {
-                return dataProcessing.movt(instructionArray);
-            }
-            case "ADD", "SUB", "AND", "ORR" -> {
-                return dataProcessing.nonSBit(instructionArray);
-            }
-            case "SUBS" -> {
-                return dataProcessing.subs(instructionArray);
-            }
-        }
-
-        switch (instruction) {
-
-            case "LDR" -> {
-                return singleDataTransfer.ldr(instructionArray);
-            }
-
-            case "STR" -> {
-                return singleDataTransfer.str(instructionArray);
-            }
-        }
-
-        throw new IllegalArgumentException(
-                "Unknown instruction: " + instruction);
+public void assemble() {
+    int currentAddress = 0;
+    for (ParsedInstruction instruction : assemblyLines) {
+        instructionList.add(instructionSender(instruction, currentAddress));
+        currentAddress++;
     }
+}
+
+    private int instructionSender(ParsedInstruction instruction, int currentAddress) {
+    switch (instruction.mnemonic) {
+        case "B", "BL", "BX" -> { return branch.branch(instruction, currentAddress, labelTable); }
+        case "MOVW"           -> { return dataProcessing.movw(instruction); }
+        case "MOVT"           -> { return dataProcessing.movt(instruction); }
+        case "ADD", "SUB", "AND", "ORR" -> { return dataProcessing.nonSBit(instruction); }
+        case "SUBS"           -> { return dataProcessing.subs(instruction); }
+        case "LDR"            -> { return singleDataTransfer.ldr(instruction); }
+        case "STR"            -> { return singleDataTransfer.str(instruction); }
+        default -> throw new IllegalArgumentException("Unknown instruction: " + instruction.mnemonic);
+    }
+}
 
     public ArrayList<Integer> getInstructionList() {
         return instructionList;
