@@ -45,15 +45,13 @@ public class DataProcessing extends Instruction {
         int imm4 = (imm16 >> 12) & 0xF;
         int imm12 = imm16 & 0xFFF;
 
-        int opcode = 0b0011;
-
-        int machineCode =
-                (cond << 28) |
-                (opcode << 24) |
-                (isTop << 23) |
-                (imm4 << 16) |
-                (rd << 12) |
-                (imm12);
+        int machineCode = 
+            (cond<<28) |
+            (0b00110<<23) |
+            (isTop<<22) | 
+            (imm4<<16) | 
+            (rd<<12) | 
+            imm12;
 
         System.out.printf("0x%08X\n", machineCode);
 
@@ -61,12 +59,13 @@ public class DataProcessing extends Instruction {
     }
 
     private int encodeDataProcessing(String[] instruction, int subS){
+        String mnemonic = instruction[0].endsWith("S") ? instruction[0].substring(0, instruction[0].length() - 1) : instruction[0];
         int cond = getConditionCode(instruction[1]);
-        int opcode = getOpCode(instruction[0]);
+        int opcode = getOpCode(mnemonic);
         int S = subS;
         int rn;
         int rd;
-        int operand = parseImmediate(instruction[instruction.length - 1]);
+        int operand = encodeImmediate(parseImmediate(instruction[instruction.length - 1]));
 
 
         if (cond != 0b1110) {
@@ -91,4 +90,17 @@ public class DataProcessing extends Instruction {
 
         return machineCode;
     }   
+
+    private int encodeImmediate(int value) {
+    for (int rot = 0; rot < 16; rot++) {
+
+        int rotated = Integer.rotateRight(value, rot * 2);
+
+        if ((rotated & 0xFFFFFF00) == 0) {
+            return (rot << 8) | (rotated & 0xFF);
+        }
+    }
+    throw new IllegalArgumentException(
+        "Immediate 0x" + Integer.toHexString(value) + " cannot be encoded");
+}
 }

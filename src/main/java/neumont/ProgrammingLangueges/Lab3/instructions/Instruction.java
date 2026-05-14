@@ -43,27 +43,27 @@ public class Instruction {
         }
     }
 
-    protected int getOpCode(String opcode){
-       return switch (opcode) {
-           case "AND" -> 0000;
-           case "EOR" -> 0001;
-           case "SUB" -> 0010;
-           case "RSB" -> 0011;
-           case "ADD" -> 0100;
-           case "ADC" -> 0101;
-           case "SBC" -> 0110;
-           case "RSC" -> 0111;
-           case "TST" -> 1000;
-           case "TEQ" -> 1001;
-           case "CMP" -> 1010;
-           case "CMN" -> 1011;
-           case "ORR" -> 1100;
-           case "MOV" -> 1101;
-           case "BIC" -> 1110;
-           case "MVN" -> 1111;
-           default -> 0000;
-       };
-    }
+    protected int getOpCode(String opcode) {
+    return switch (opcode) {
+        case "AND" -> 0b0000;
+        case "EOR" -> 0b0001;
+        case "SUB" -> 0b0010;
+        case "RSB" -> 0b0011;
+        case "ADD" -> 0b0100;
+        case "ADC" -> 0b0101;
+        case "SBC" -> 0b0110;
+        case "RSC" -> 0b0111;
+        case "TST" -> 0b1000;
+        case "TEQ" -> 0b1001;
+        case "CMP" -> 0b1010;
+        case "CMN" -> 0b1011;
+        case "ORR" -> 0b1100;
+        case "MOV" -> 0b1101;
+        case "BIC" -> 0b1110;
+        case "MVN" -> 0b1111; 
+        default    -> 0b0000;
+    };
+}
 
     protected int parseImmediate(String value) {
         value = value.trim().replace("#", "");

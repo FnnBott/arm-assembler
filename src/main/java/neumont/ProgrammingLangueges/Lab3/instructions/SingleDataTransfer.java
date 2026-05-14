@@ -2,13 +2,14 @@ package neumont.ProgrammingLangueges.Lab3.instructions;
 
 public class SingleDataTransfer extends Instruction {
     
-    public int ldr(String[] instruction){
-        return encodeLoadStore(instruction, 0);
+    public int ldr(String[] instruction) { 
+        return encodeLoadStore(instruction, 1); 
     }
 
-    public int str(String[] instruction){
-        return encodeLoadStore(instruction, 1);
+    public int str(String[] instruction) { 
+        return encodeLoadStore(instruction, 0); 
     }
+
 
     private int encodeLoadStore(String[] instruction, int loadBit){
         int cond = getConditionCode(instruction[0]);

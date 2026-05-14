@@ -25,7 +25,7 @@ public class Branch extends Instruction {
     }
 
     private int calculateOffset(String operand) {
-
-        return Integer.parseInt(operand);
+        int wordOffset = Integer.parseInt(operand);
+        return wordOffset & 0x00FFFFFF;
     }
 }
