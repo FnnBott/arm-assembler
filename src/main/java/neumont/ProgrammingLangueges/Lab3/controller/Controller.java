@@ -23,7 +23,7 @@ public class Controller {
     private HashMap<String, Integer> labelTable = new HashMap<>();
 
     public void readFile() {
-    File assemblyFile = new File("Lab4Assembly.txt"); //TODO: DONT FORGET TO CHANGE THIS FOR EACH LAB FUCKASS!
+    File assemblyFile = new File("Lab5Assembly.txt");
 
     try (Scanner reader = new Scanner(assemblyFile)) {
 

@@ -5,10 +5,10 @@ import java.util.Set;
 
 public class ParsedInstruction {
 
-    public final String   label;      // null if no label
-    public final String   mnemonic;   // "ADD", "SUBS", "BNE" — condition already stripped
-    public final String   condition;  // "AL", "NE", "EQ", etc. — always present
-    public final String[] operands;   // operands only, no mnemonic, no label
+    public final String   label;      
+    public final String   mnemonic;  
+    public final String   condition;  
+    public final String[] operands;
 
     private static final Set<String> CONDITION_CODES = 
     Set.of(
@@ -37,6 +37,10 @@ public class ParsedInstruction {
         }
 
         operands = Arrays.copyOfRange(tokens, start + 1, tokens.length);
+
+        for (int i = 0; i < operands.length; i++) {
+            operands[i] = operands[i].replace("[", "").replace("]", "");
+        }
     }
 
     private String peelCondition(String full) {

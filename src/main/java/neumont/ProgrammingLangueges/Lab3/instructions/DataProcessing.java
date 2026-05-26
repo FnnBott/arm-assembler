@@ -54,10 +54,10 @@ public class DataProcessing extends Instruction {
     private int encodeDataProcessing(ParsedInstruction instruction, int subS){
         
         int cond = instruction.conditionCode();
-        int opcode = getOpCode(instruction.mnemonic);
+        int opcode = getOpCode(instruction.mnemonic.equals("SUBS") ? "SUB" : instruction.mnemonic);    
         int S = subS;
-        int rn = getRegister(instruction.operands[0]);
-        int rd = getRegister(instruction.operands[1]);
+        int rn = getRegister(instruction.operands[1]);
+        int rd = getRegister(instruction.operands[0]);
         int operand = parseImmediate(instruction.operands[2]);
 
 

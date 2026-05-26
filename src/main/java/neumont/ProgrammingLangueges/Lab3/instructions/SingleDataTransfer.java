@@ -15,33 +15,47 @@ public class SingleDataTransfer extends Instruction {
 
     private int encodeLoadStore(ParsedInstruction instr, int loadBit) {
     int cond = instr.conditionCode();
-    int rd = getRegister(instr.operands[0]);
+    int rd   = getRegister(instr.operands[0]);
 
-    String address = instr.operands[1].replace("[", "").replace("]", "");
-    String[] parts = address.split(",");
+    boolean writeback = false;
+    for (int i = 0; i < instr.operands.length; i++) {
+        if (instr.operands[i].contains("!")) {
+            instr.operands[i] = instr.operands[i].replace("!", "");
+            writeback = true;
+        }
+    }
 
-    int rn = getRegister(parts[0]);
-    int offset = parts.length > 1 ? parseImmediate(parts[1]) & 0xFFF : 0;
+    int rn = getRegister(instr.operands[1]);
+    int I = 0, B = 0, L = loadBit;
+    int P, U, W, offset;
 
-    int 
-    I = 0, 
-    P = 0, 
-    U = 0, 
-    B = 0, 
-    W = 0, 
-    L = loadBit;
+    if (instr.operands.length > 2) {
+        int raw = parseImmediate(instr.operands[2]);
+        U      = raw >= 0 ? 1 : 0;
+        offset = Math.abs(raw) & 0xFFF;
+        P      = writeback ? 1 : 0;
+        W      = 1;
+    } else {
+        P = 0;
+        U = 0; 
+        W = 0; 
+        offset = 0;
+    }
 
-    return 
+    int machineCode =
         (cond << 28) |
         (0b01 << 26) |
-        (I << 25) |
+        (I << 25) | 
         (P << 24) |
-        (U << 23) |
-        (B << 22) |
-        (W << 21) |
-        (L << 20) | 
-        (rn << 16) | 
-        (rd << 12) | 
+        (U   << 23) | 
+        (B   << 22) | 
+        (W << 21) | 
+        (L << 20) |
+        (rn  << 16) | 
+        (rd  << 12) | 
         offset;
+
+    System.out.printf("0x%08X\n", machineCode);
+    return machineCode;
 }
 }

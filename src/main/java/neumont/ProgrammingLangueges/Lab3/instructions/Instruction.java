@@ -31,13 +31,13 @@ public class Instruction {
 
         switch (reg) {
             case "SP" -> {
-                return 13;
+                return 13; //stack poiner
            }
             case "LR" -> {
-                return 14;
+                return 14; //link register?
            }
             case "PC" -> {
-                return 15;
+                return 15; //program counter
            }
             default -> throw new IllegalArgumentException("Invalid register: " + reg);
         }
